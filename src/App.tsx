@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { FavoritesProvider } from './hooks/useFavorites'
 import { Layout } from './components/layout/Layout'
 import { HomePage } from './pages/HomePage'
 import { MoviesPage } from './pages/MoviesPage'
@@ -25,18 +26,19 @@ function App() {
   return (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/movies" element={<MoviesPage />} />
-              <Route path="/movies/:id" element={<MovieDetailPage />} />
-              <Route path="/actors" element={<ActorsPage />} />
-              <Route path="/actors/:id" element={<ActorDetailPage />} />
-              <Route path="/directors" element={<DirectorsPage />} />
-              <Route path="/directors/:id" element={<DirectorDetailPage />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
-              <Route path="*" element={
+        <FavoritesProvider>
+          <Router>
+            <Layout>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/movies" element={<MoviesPage />} />
+                <Route path="/movies/:id" element={<MovieDetailPage />} />
+                <Route path="/actors" element={<ActorsPage />} />
+                <Route path="/actors/:id" element={<ActorDetailPage />} />
+                <Route path="/directors" element={<DirectorsPage />} />
+                <Route path="/directors/:id" element={<DirectorDetailPage />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route path="*" element={
                 <div className="text-center py-12">
                   <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">🎬</div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Page not found</h3>
@@ -46,6 +48,7 @@ function App() {
             </Routes>
           </Layout>
         </Router>
+        </FavoritesProvider>
       </QueryClientProvider>
     </ThemeProvider>
   )
