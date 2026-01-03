@@ -25,13 +25,13 @@ export function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/movies">
-              <Button size="lg" variant="secondary" className="bg-white text-blue-600 hover:bg-gray-100">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 dark:bg-gray-100 dark:text-blue-600 dark:hover:bg-gray-200">
                 <Film className="h-5 w-5 mr-2" />
                 Browse Movies
               </Button>
             </Link>
             <Link to="/favorites">
-              <Button size="lg" variant="ghost" className="text-white border-white hover:bg-white/10">
+              <Button size="lg" variant="ghost" className="text-white border border-white hover:bg-white/10">
                 View Favorites
                 <ArrowRight className="h-5 w-5 ml-2" />
               </Button>
@@ -44,25 +44,25 @@ export function HomePage() {
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardContent className="p-6 text-center">
-            <Film className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Movies</h3>
-            <p className="text-gray-600">Discover thousands of movies</p>
+            <Film className="h-12 w-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Movies</h3>
+            <p className="text-gray-600 dark:text-gray-400">Discover thousands of movies</p>
           </CardContent>
         </Card>
         
         <Card>
           <CardContent className="p-6 text-center">
-            <Users className="h-12 w-12 text-green-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Artists</h3>
-            <p className="text-gray-600">Explore actors and directors</p>
+            <Users className="h-12 w-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Artists</h3>
+            <p className="text-gray-600 dark:text-gray-400">Explore actors and directors</p>
           </CardContent>
         </Card>
         
         <Card>
           <CardContent className="p-6 text-center">
-            <Star className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Reviews</h3>
-            <p className="text-gray-600">Read authentic movie reviews</p>
+            <Star className="h-12 w-12 text-yellow-500 dark:text-yellow-400 mx-auto mb-4" />
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Reviews</h3>
+            <p className="text-gray-600 dark:text-gray-400">Read authentic movie reviews</p>
           </CardContent>
         </Card>
       </section>
@@ -71,11 +71,11 @@ export function HomePage() {
       <section>
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="h-8 w-8 text-blue-600" />
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+              <TrendingUp className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               Top Rated Movies
             </h2>
-            <p className="text-gray-600 mt-2">The highest rated movies in our collection</p>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">The highest rated movies in our collection</p>
           </div>
           <Link to="/movies?sort=rating">
             <Button variant="outline">
@@ -100,15 +100,15 @@ export function HomePage() {
       {
         genresData && genresData?.results.length > 0 && <section>
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Browse by Genre</h2>
-            <p className="text-gray-600">Find movies by your favorite genres</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Browse by Genre</h2>
+            <p className="text-gray-600 dark:text-gray-400">Find movies by your favorite genres</p>
           </div>
 
           {genresLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="animate-pulse">
-                  <div className="h-20 bg-gray-200 rounded-lg"></div>
+                  <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
                 </div>
               ))}
             </div>
@@ -120,12 +120,12 @@ export function HomePage() {
                   to={`/movies?genre=${encodeURIComponent(genre.name)}`}
                   className="group"
                 >
-                  <Card hover className="h-20 flex items-center justify-center text-center p-4 transition-colors group-hover:bg-blue-50">
+                  <Card hover className="h-20 flex items-center justify-center text-center p-4 transition-colors group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20">
                     <div>
-                      <h3 className="font-medium text-gray-900 group-hover:text-blue-600">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                         {genre.name}
                       </h3>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                         {genre.movies_count} movies
                       </p>
                     </div>
@@ -141,8 +141,8 @@ export function HomePage() {
       {featuredReviews && featuredReviews.results.length > 0 && (
         <section>
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured Reviews</h2>
-            <p className="text-gray-600">What our community is saying</p>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Featured Reviews</h2>
+            <p className="text-gray-600 dark:text-gray-400">What our community is saying</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -150,15 +150,15 @@ export function HomePage() {
               <Card key={review.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <h3 className="font-medium">{review.reviewer_name}</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-gray-100">{review.reviewer_name}</h3>
                     <div className="flex items-center gap-1">
                       <Star className="h-4 w-4 fill-current text-yellow-400" />
-                      <span className="text-sm font-medium">{review.rating}/10</span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{review.rating}/10</span>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 line-clamp-3">{review.comment}</p>
+                  <p className="text-gray-700 dark:text-gray-300 line-clamp-3">{review.comment}</p>
                 </CardContent>
               </Card>
             ))}

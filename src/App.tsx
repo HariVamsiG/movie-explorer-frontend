@@ -1,6 +1,6 @@
-import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from './contexts/ThemeContext'
 import { Layout } from './components/layout/Layout'
 import { HomePage } from './pages/HomePage'
 import { MoviesPage } from './pages/MoviesPage'
@@ -21,27 +21,29 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/movies" element={<MoviesPage />} />
-            <Route path="/movies/:id" element={<MovieDetailPage />} />
-            <Route path="/actors" element={<ActorsPage />} />
-            <Route path="/directors" element={<DirectorsPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="*" element={
-              <div className="text-center py-12">
-                <div className="text-gray-400 text-6xl mb-4">🎬</div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Page not found</h3>
-                <p className="text-gray-600">The page you're looking for doesn't exist.</p>
-              </div>
-            } />
-          </Routes>
-        </Layout>
-      </Router>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/movies" element={<MoviesPage />} />
+              <Route path="/movies/:id" element={<MovieDetailPage />} />
+              <Route path="/actors" element={<ActorsPage />} />
+              <Route path="/directors" element={<DirectorsPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="*" element={
+                <div className="text-center py-12">
+                  <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">🎬</div>
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Page not found</h3>
+                  <p className="text-gray-600 dark:text-gray-400">The page you're looking for doesn't exist.</p>
+                </div>
+              } />
+            </Routes>
+          </Layout>
+        </Router>
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }
 

@@ -39,8 +39,8 @@ export function MovieCard({ movie, className }: MovieCardProps) {
               className="h-64 w-full object-cover transition-transform group-hover:scale-105"
             />
           ) : (
-            <div className="h-64 w-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-400 text-sm">No Image</span>
+            <div className="h-64 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+              <span className="text-gray-400 dark:text-gray-500 text-sm">No Image</span>
             </div>
           )}
           
@@ -48,8 +48,8 @@ export function MovieCard({ movie, className }: MovieCardProps) {
             variant="ghost"
             size="sm"
             className={cn(
-              'absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm',
-              favorite ? 'text-red-500' : 'text-gray-600'
+              'absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm',
+              favorite ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-300'
             )}
             onClick={handleToggleFavorite}
           >
@@ -65,11 +65,11 @@ export function MovieCard({ movie, className }: MovieCardProps) {
         </div>
 
         <CardContent className="p-4">
-          <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+          <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
             {movie.title}
           </h3>
           
-          <div className="space-y-2 text-sm text-gray-600">
+          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>{formatYear(movie.release_year)}</span>
@@ -92,13 +92,13 @@ export function MovieCard({ movie, className }: MovieCardProps) {
                 {movie.genres.slice(0, 3).map((genre) => (
                   <span
                     key={genre}
-                    className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                    className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full"
                   >
                     {genre}
                   </span>
                 ))}
                 {movie.genres.length > 3 && (
-                  <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
                     +{movie.genres.length - 3}
                   </span>
                 )}
@@ -106,7 +106,7 @@ export function MovieCard({ movie, className }: MovieCardProps) {
             )}
 
             {movie.review_count > 0 && (
-              <div className="text-xs text-gray-500 mt-2">
+              <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                 {movie.review_count} review{movie.review_count !== 1 ? 's' : ''}
               </div>
             )}

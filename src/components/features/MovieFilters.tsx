@@ -35,7 +35,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
         <div className="space-y-4">
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
             <Input
               placeholder="Search movies..."
               value={filters.title || ''}
@@ -69,9 +69,9 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
 
           {/* Advanced Filters */}
           {showAdvanced && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t dark:border-gray-700">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Director
                 </label>
                 <Input
@@ -82,7 +82,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Actor
                 </label>
                 <Input
@@ -93,11 +93,11 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Genre
                 </label>
                 <select
-                  className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-400"
                   value={filters.genre || ''}
                   onChange={(e) => handleFilterChange('genre', e.target.value)}
                 >
@@ -111,7 +111,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Release Year (From)
                 </label>
                 <Input
@@ -125,7 +125,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Release Year (To)
                 </label>
                 <Input
@@ -139,7 +139,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Minimum Rating
                 </label>
                 <Input

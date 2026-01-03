@@ -12,9 +12,9 @@ export function FavoritesPage() {
   if (favorites.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="text-gray-400 text-6xl mb-4">💝</div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No favorites yet</h3>
-        <p className="text-gray-600 mb-6">
+        <div className="text-gray-400 dark:text-gray-500 text-6xl mb-4">💝</div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No favorites yet</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
           Start adding movies to your favorites to see them here.
         </p>
         <Link to="/movies">
@@ -27,8 +27,8 @@ export function FavoritesPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Favorites</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">My Favorites</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           You have {favorites.length} favorite movie{favorites.length !== 1 ? 's' : ''}
         </p>
       </div>
@@ -44,15 +44,15 @@ export function FavoritesPage() {
                   className="h-64 w-full object-cover transition-transform group-hover:scale-105"
                 />
               ) : (
-                <div className="h-64 w-full bg-gray-200 flex items-center justify-center">
-                  <span className="text-gray-400 text-sm">No Image</span>
+                <div className="h-64 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                  <span className="text-gray-400 dark:text-gray-500 text-sm">No Image</span>
                 </div>
               )}
               
               <Button
                 variant="ghost"
                 size="sm"
-                className="absolute top-2 right-2 p-2 rounded-full bg-white/80 backdrop-blur-sm text-red-600 hover:text-red-700"
+                className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
                 onClick={() => removeFromFavorites(movie.id)}
               >
                 <Trash2 className="h-4 w-4" />
@@ -60,11 +60,11 @@ export function FavoritesPage() {
             </div>
 
             <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-2 line-clamp-2">
+              <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
                 {movie.title}
               </h3>
               
-              <div className="space-y-2 text-sm text-gray-600 mb-4">
+              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
                 <p>Year: {formatYear(movie.release_year)}</p>
                 <p>Director: {movie.director_name}</p>
               </div>

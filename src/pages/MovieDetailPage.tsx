@@ -19,8 +19,8 @@ export function MovieDetailPage() {
   if (error || !movie) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">Movie not found</h3>
+        <div className="text-red-500 dark:text-red-400 text-6xl mb-4">⚠️</div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Movie not found</h3>
         <Link to="/movies">
           <Button>Back to Movies</Button>
         </Link>
@@ -43,7 +43,7 @@ export function MovieDetailPage() {
   return (
     <div>
       {/* Back Button */}
-      <Link to="/movies" className="inline-flex items-center text-blue-600 hover:text-blue-700 mb-6">
+      <Link to="/movies" className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-6">
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back to Movies
       </Link>
@@ -60,8 +60,8 @@ export function MovieDetailPage() {
                   className="w-full h-auto rounded-lg"
                 />
               ) : (
-                <div className="aspect-[2/3] bg-gray-200 rounded-lg flex items-center justify-center">
-                  <span className="text-gray-400">No Image Available</span>
+                <div className="aspect-[2/3] bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                  <span className="text-gray-400 dark:text-gray-500">No Image Available</span>
                 </div>
               )}
             </CardContent>
@@ -73,7 +73,7 @@ export function MovieDetailPage() {
           {/* Title and Actions */}
           <div>
             <div className="flex items-start justify-between mb-4">
-              <h1 className="text-4xl font-bold text-gray-900">{movie.title}</h1>
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">{movie.title}</h1>
               <Button
                 variant={favorite ? 'primary' : 'outline'}
                 onClick={handleToggleFavorite}
@@ -85,7 +85,7 @@ export function MovieDetailPage() {
             </div>
 
             {/* Basic Info */}
-            <div className="flex flex-wrap items-center gap-4 text-gray-600 mb-6">
+            <div className="flex flex-wrap items-center gap-4 text-gray-600 dark:text-gray-400 mb-6">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 <span>{formatYear(movie.release_year)}</span>
@@ -111,7 +111,7 @@ export function MovieDetailPage() {
               {movie.genres.map((genre) => (
                 <span
                   key={genre.id}
-                  className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                  className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
                 >
                   {genre.name}
                 </span>
@@ -123,10 +123,10 @@ export function MovieDetailPage() {
           {movie.plot && (
             <Card>
               <CardHeader>
-                <h2 className="text-xl font-semibold">Plot</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Plot</h2>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 leading-relaxed">{movie.plot}</p>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{movie.plot}</p>
               </CardContent>
             </Card>
           )}
@@ -134,7 +134,7 @@ export function MovieDetailPage() {
           {/* Director */}
           <Card>
             <CardHeader>
-              <h2 className="text-xl font-semibold flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <User className="h-5 w-5" />
                 Director
               </h2>
@@ -142,16 +142,16 @@ export function MovieDetailPage() {
             <CardContent>
               <Link 
                 to={`/directors/${movie.director.id}`}
-                className="block hover:bg-gray-50 p-4 rounded-lg transition-colors"
+                className="block hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-colors"
               >
-                <h3 className="font-medium text-lg text-blue-600 hover:text-blue-700">
+                <h3 className="font-medium text-lg text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                   {movie.director.name}
                 </h3>
                 {movie.director.nationality && (
-                  <p className="text-gray-600">{movie.director.nationality}</p>
+                  <p className="text-gray-600 dark:text-gray-400">{movie.director.nationality}</p>
                 )}
                 {movie.director.biography && (
-                  <p className="text-gray-700 mt-2 line-clamp-3">{movie.director.biography}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mt-2 line-clamp-3">{movie.director.biography}</p>
                 )}
               </Link>
             </CardContent>
@@ -161,7 +161,7 @@ export function MovieDetailPage() {
           {movie.actors.length > 0 && (
             <Card>
               <CardHeader>
-                <h2 className="text-xl font-semibold flex items-center gap-2">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                   <Users className="h-5 w-5" />
                   Cast
                 </h2>
@@ -172,13 +172,13 @@ export function MovieDetailPage() {
                     <Link
                       key={actor.id}
                       to={`/actors/${actor.id}`}
-                      className="block hover:bg-gray-50 p-4 rounded-lg transition-colors"
+                      className="block hover:bg-gray-50 dark:hover:bg-gray-700 p-4 rounded-lg transition-colors"
                     >
-                      <h3 className="font-medium text-blue-600 hover:text-blue-700">
+                      <h3 className="font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300">
                         {actor.name}
                       </h3>
                       {actor.nationality && (
-                        <p className="text-gray-600 text-sm">{actor.nationality}</p>
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">{actor.nationality}</p>
                       )}
                     </Link>
                   ))}
@@ -191,24 +191,24 @@ export function MovieDetailPage() {
           {movie.reviews.length > 0 && (
             <Card>
               <CardHeader>
-                <h2 className="text-xl font-semibold">Reviews</h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Reviews</h2>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {movie.reviews.slice(0, 3).map((review) => (
-                    <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
+                    <div key={review.id} className="border-b border-gray-200 dark:border-gray-700 pb-4 last:border-b-0">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium">{review.reviewer_name}</h4>
+                        <h4 className="font-medium text-gray-900 dark:text-gray-100">{review.reviewer_name}</h4>
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-current text-yellow-400" />
-                          <span className="text-sm font-medium">{review.rating}/10</span>
+                          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">{review.rating}/10</span>
                         </div>
                       </div>
-                      <p className="text-gray-700">{review.comment}</p>
+                      <p className="text-gray-700 dark:text-gray-300">{review.comment}</p>
                     </div>
                   ))}
                   {movie.reviews.length > 3 && (
-                    <p className="text-sm text-gray-500 text-center">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                       And {movie.reviews.length - 3} more reviews...
                     </p>
                   )}

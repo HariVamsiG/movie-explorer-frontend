@@ -29,9 +29,9 @@ export function DirectorsPage() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading directors</h3>
-        <p className="text-gray-600">Please try again later.</p>
+        <div className="text-red-500 dark:text-red-400 text-6xl mb-4">⚠️</div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Error loading directors</h3>
+        <p className="text-gray-600 dark:text-gray-400">Please try again later.</p>
       </div>
     )
   }
@@ -41,8 +41,8 @@ export function DirectorsPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Directors</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">Directors</h1>
+        <p className="text-gray-600 dark:text-gray-400">
           Explore the visionary directors behind great movies
         </p>
       </div>
@@ -50,7 +50,7 @@ export function DirectorsPage() {
       {/* Search */}
       <div className="mb-6">
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
           <Input
             placeholder="Search directors..."
             value={searchTerm}
@@ -69,9 +69,9 @@ export function DirectorsPage() {
         </div>
       ) : data?.results.length === 0 ? (
         <div className="text-center py-12">
-          <User className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No directors found</h3>
-          <p className="text-gray-600">Try adjusting your search criteria.</p>
+          <User className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No directors found</h3>
+          <p className="text-gray-600 dark:text-gray-400">Try adjusting your search criteria.</p>
         </div>
       ) : (
         <>
@@ -87,18 +87,18 @@ export function DirectorsPage() {
                         className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
                       />
                     ) : (
-                      <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <User className="h-10 w-10 text-purple-600" />
+                      <div className="w-20 h-20 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <User className="h-10 w-10 text-purple-600 dark:text-purple-400" />
                       </div>
                     )}
                     
-                    <h3 className="font-semibold text-lg mb-2">{director.name}</h3>
+                    <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">{director.name}</h3>
                     
                     {director.nationality && (
-                      <p className="text-gray-600 text-sm mb-2">{director.nationality}</p>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{director.nationality}</p>
                     )}
                     
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 dark:text-gray-400 text-sm">
                       {director.movies_count} movie{director.movies_count !== 1 ? 's' : ''}
                     </p>
                   </CardContent>
