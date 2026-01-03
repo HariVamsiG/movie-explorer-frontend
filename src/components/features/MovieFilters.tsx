@@ -4,15 +4,30 @@ import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
 import { Autocomplete } from '../ui/Autocomplete'
+import { PageSizeSelector } from '../ui/PageSizeSelector'
+import { SortSelector } from '../ui/SortSelector'
 import { useGenres, useActors, useDirectors } from '../../hooks/useQueries'
 import type { MovieFilters } from '../../types'
 
 interface MovieFiltersProps {
   filters: MovieFilters
   onFiltersChange: (filters: MovieFilters) => void
+  onClearFilters?: () => void
+  pageSize: number
+  onPageSizeChange: (size: number) => void
+  sortBy: string
+  onSortChange: (sort: string) => void
 }
 
-export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFiltersProps) {
+export function MovieFiltersComponent({ 
+  filters, 
+  onFiltersChange, 
+  onClearFilters,
+  pageSize,
+  onPageSizeChange,
+  sortBy,
+  onSortChange
+}: MovieFiltersProps) {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const { data: genresData } = useGenres()
   const { data: actorsData } = useActors({ page: 1 })
@@ -28,6 +43,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
   const clearFilters = () => {
     onFiltersChange({})
     setShowAdvanced(false)
+    onClearFilters?.()
   }
 
   const hasActiveFilters = Object.values(filters).some(value => value !== undefined && value !== '')
@@ -51,30 +67,45 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
           </div>
 
           {/* Quick Filters */}
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={showAdvanced ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Advanced Filters
-            </Button>
-
-            {hasActiveFilters && (
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-2">
               <Button
-                variant="ghost"
+                variant={showAdvanced ? 'primary' : 'outline'}
                 size="sm"
-                onClick={clearFilters}
+                onClick={() => setShowAdvanced(!showAdvanced)}
               >
-                <X className="h-4 w-4 mr-2" />
-                Clear All
+                <Filter className="h-4 w-4 mr-2" />
+                Advanced Filters
               </Button>
-            )}
+
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Clear All
+                </Button>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <SortSelector 
+                sortBy={sortBy}
+                onSortChange={onSortChange}
+              />
+              <PageSizeSelector 
+                pageSize={pageSize}
+                onPageSizeChange={onPageSizeChange}
+              />
+            </div>
           </div>
 
           {/* Advanced Filters */}
-          {showAdvanced && (
+          <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            showAdvanced ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          }`}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4 border-t dark:border-gray-700">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -161,7 +192,7 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
                 />
               </div>
             </div>
-          )}
+          </div>
         </div>
       </CardContent>
     </Card>

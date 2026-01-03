@@ -10,7 +10,7 @@ import type {
   MovieFilters 
 } from '../types'
 
-const API_BASE_URL = 'http://localhost:8000/api'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -21,20 +21,20 @@ const api = axios.create({
 
 // Movies API
 export const moviesApi = {
-  getMovies: (params?: MovieFilters & { page?: number }) =>
+  getMovies: (params?: MovieFilters & { page?: number; page_size?: number }) =>
     api.get<PaginatedResponse<Movie>>('/movies/', { params }),
   
   getMovie: (id: number) =>
     api.get<MovieDetail>(`/movies/${id}/`),
   
-  getMoviesByGenre: (genreName: string, page?: number) =>
+  getMoviesByGenre: (genreName: string, page?: number, pageSize?: number) =>
     api.get<PaginatedResponse<Movie>>('/movies/by_genre/', { 
-      params: { name: genreName, page } 
+      params: { name: genreName, page, page_size: pageSize } 
     }),
   
-  getMoviesByDirector: (directorName: string, page?: number) =>
+  getMoviesByDirector: (directorName: string, page?: number, pageSize?: number) =>
     api.get<PaginatedResponse<Movie>>('/movies/by_director/', { 
-      params: { name: directorName, page } 
+      params: { name: directorName, page, page_size: pageSize } 
     }),
   
   getTopRatedMovies: () =>
@@ -43,7 +43,7 @@ export const moviesApi = {
 
 // Actors API
 export const actorsApi = {
-  getActors: (params?: { page?: number; name?: string }) =>
+  getActors: (params?: { page?: number; name?: string; page_size?: number }) =>
     api.get<PaginatedResponse<Actor>>('/actors/', { params }),
   
   getActor: (id: number) =>
@@ -52,7 +52,7 @@ export const actorsApi = {
 
 // Directors API
 export const directorsApi = {
-  getDirectors: (params?: { page?: number; name?: string }) =>
+  getDirectors: (params?: { page?: number; name?: string; page_size?: number }) =>
     api.get<PaginatedResponse<Director>>('/directors/', { params }),
   
   getDirector: (id: number) =>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { MovieGrid } from '../components/features/MovieGrid'
 import { MovieFiltersComponent } from '../components/features/MovieFilters'
 import { Pagination } from '../components/ui/Pagination'
@@ -10,8 +10,11 @@ import type { MovieFilters } from '../types'
 
 export function MoviesPage() {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [filters, setFilters] = useState<MovieFilters>({})
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
+  const [sortBy, setSortBy] = useState('')
 
   const debouncedFilters = useDebounce(filters, 700)
 
@@ -23,7 +26,12 @@ export function MoviesPage() {
     }
   }, [searchParams])
 
-  const { data, isLoading, error } = useMovies({ ...debouncedFilters, page: currentPage })
+  const { data, isLoading, error } = useMovies({ 
+    ...debouncedFilters, 
+    page: currentPage, 
+    page_size: pageSize,
+    ordering: sortBy || undefined
+  })
 
   const handleFiltersChange = (newFilters: MovieFilters) => {
     setFilters(newFilters)
@@ -33,6 +41,23 @@ export function MoviesPage() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+    setCurrentPage(1) // Reset to first page when page size changes
+    // Force query refetch by clearing filters temporarily
+    setFilters(prev => ({ ...prev }))
+  }
+
+  const handleClearFilters = () => {
+    // Clear URL params
+    navigate('/movies', { replace: true })
+  }
+
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort)
+    setCurrentPage(1) // Reset to first page when sort changes
   }
 
   if (error) {
@@ -58,7 +83,12 @@ export function MoviesPage() {
 
       <MovieFiltersComponent 
         filters={filters} 
-        onFiltersChange={handleFiltersChange} 
+        onFiltersChange={handleFiltersChange}
+        onClearFilters={handleClearFilters}
+        pageSize={pageSize}
+        onPageSizeChange={handlePageSizeChange}
+        sortBy={sortBy}
+        onSortChange={handleSortChange}
       />
 
       {isLoading ? (
@@ -75,10 +105,12 @@ export function MoviesPage() {
         <>
           <MovieGrid movies={data?.results || []} />
           
-          {data && data.results.length > 0 && (
+          {data && (
             <Pagination
               currentPage={currentPage}
-              totalPages={totalPages}
+              totalPages={Math.ceil(data.count / pageSize)}
+              totalCount={data.count}
+              pageSize={pageSize}
               onPageChange={handlePageChange}
               hasNext={!!data.next}
               hasPrevious={!!data.previous}

@@ -5,18 +5,21 @@ import { Card, CardContent } from '../components/ui/Card'
 import { Input } from '../components/ui/Input'
 import { LoadingCard } from '../components/ui/Loading'
 import { Pagination } from '../components/ui/Pagination'
+import { PageSizeSelector } from '../components/ui/PageSizeSelector'
 import { useActors } from '../hooks/useQueries'
 import { useDebounce } from '../hooks/useDebounce'
 
 export function ActorsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(20)
   
   const debouncedSearch = useDebounce(searchTerm, 700)
 
   const { data, isLoading, error } = useActors({ 
     page: currentPage, 
-    name: debouncedSearch || undefined 
+    name: debouncedSearch || undefined,
+    page_size: pageSize
   })
 
   const handlePageChange = (page: number) => {
@@ -29,6 +32,13 @@ export function ActorsPage() {
     setCurrentPage(1)
   }
 
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+    setCurrentPage(1)
+    // Force query refetch
+    setSearchTerm(prev => prev)
+  }
+
   if (error) {
     return (
       <div className="text-center py-12">
@@ -39,7 +49,7 @@ export function ActorsPage() {
     )
   }
 
-  const totalPages = data ? Math.ceil(data.count / 10) : 0
+  const totalPages = data ? Math.ceil(data.count / pageSize) : 0
 
   return (
     <div>
@@ -50,8 +60,8 @@ export function ActorsPage() {
         </p>
       </div>
 
-      {/* Search */}
-      <div className="mb-6">
+      {/* Search and Page Size */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
           <Input
@@ -61,6 +71,10 @@ export function ActorsPage() {
             className="pl-10"
           />
         </div>
+        <PageSizeSelector 
+          pageSize={pageSize}
+          onPageSizeChange={handlePageSizeChange}
+        />
       </div>
 
       {/* Actors Grid */}
@@ -126,6 +140,8 @@ export function ActorsPage() {
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
+              totalCount={data.count}
+              pageSize={pageSize}
               onPageChange={handlePageChange}
               hasNext={!!data.next}
               hasPrevious={!!data.previous}

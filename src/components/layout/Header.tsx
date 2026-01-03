@@ -66,8 +66,10 @@ export function Header() {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden border-t dark:border-gray-700 bg-white dark:bg-gray-900">
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+        isMenuOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="border-t dark:border-gray-700 bg-white dark:bg-gray-900">
           <div className="px-2 pt-2 pb-3 space-y-1">
             {navigation.map((item) => {
               const isActive = location.pathname === item.href || 
@@ -92,7 +94,7 @@ export function Header() {
             })}
           </div>
         </div>
-      )}
+      </div>
     </header>
   )
 }

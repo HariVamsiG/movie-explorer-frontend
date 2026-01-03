@@ -81,6 +81,8 @@ export interface MovieFilters {
   genre?: string
   rating_gte?: number
   rating_lte?: number
+  page_size?: number
+  ordering?: string
 }
 
 export interface FavoriteMovie {

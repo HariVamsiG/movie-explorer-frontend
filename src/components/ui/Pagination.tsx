@@ -5,6 +5,8 @@ import { Button } from '../ui/Button'
 interface PaginationProps {
   currentPage: number
   totalPages: number
+  totalCount: number
+  pageSize: number
   onPageChange: (page: number) => void
   hasNext: boolean
   hasPrevious: boolean
@@ -13,6 +15,8 @@ interface PaginationProps {
 export function Pagination({ 
   currentPage, 
   totalPages, 
+  totalCount,
+  pageSize,
   onPageChange, 
   hasNext, 
   hasPrevious 
@@ -47,48 +51,48 @@ export function Pagination({
     return rangeWithDots
   }
 
-  if (totalPages <= 1) return null
+  if (totalPages <= 1 || totalCount <= pageSize) return null
 
   return (
     <div className="flex items-center justify-center space-x-2 mt-8">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={!hasPrevious}
-      >
-        <ChevronLeft className="h-4 w-4" />
-        Previous
-      </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={!hasPrevious}
+        >
+          <ChevronLeft className="h-4 w-4" />
+          Previous
+        </Button>
 
-      <div className="flex items-center space-x-1">
-        {getVisiblePages().map((page, index) => (
-          <React.Fragment key={index}>
-            {page === '...' ? (
-              <span className="px-3 py-2 text-gray-500 dark:text-gray-400">...</span>
-            ) : (
-              <Button
-                variant={currentPage === page ? 'primary' : 'outline'}
-                size="sm"
-                onClick={() => onPageChange(page as number)}
-                className="min-w-[40px]"
-              >
-                {page}
-              </Button>
-            )}
-          </React.Fragment>
-        ))}
+        <div className="flex items-center space-x-1">
+          {getVisiblePages().map((page, index) => (
+            <React.Fragment key={index}>
+              {page === '...' ? (
+                <span className="px-3 py-2 text-gray-500 dark:text-gray-400">...</span>
+              ) : (
+                <Button
+                  variant={currentPage === page ? 'primary' : 'outline'}
+                  size="sm"
+                  onClick={() => onPageChange(page as number)}
+                  className="min-w-[40px]"
+                >
+                  {page}
+                </Button>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={!hasNext}
+        >
+          Next
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       </div>
-
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={!hasNext}
-      >
-        Next
-        <ChevronRight className="h-4 w-4" />
-      </Button>
-    </div>
   )
 }

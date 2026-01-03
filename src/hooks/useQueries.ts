@@ -3,9 +3,9 @@ import { moviesApi, actorsApi, directorsApi, genresApi, reviewsApi } from '../se
 import type { MovieFilters } from '../types'
 
 // Movies queries
-export const useMovies = (filters?: MovieFilters & { page?: number }) => {
+export const useMovies = (filters?: MovieFilters & { page?: number; page_size?: number; ordering?: string }) => {
   return useQuery({
-    queryKey: ['movies', filters],
+    queryKey: ['movies', filters?.page || 1, filters?.page_size || 20, filters?.ordering || '', filters],
     queryFn: () => moviesApi.getMovies(filters),
     select: (data) => data.data,
   })
@@ -29,9 +29,9 @@ export const useTopRatedMovies = () => {
 }
 
 // Actors queries
-export const useActors = (params?: { page?: number; name?: string }) => {
+export const useActors = (params?: { page?: number; name?: string; page_size?: number }) => {
   return useQuery({
-    queryKey: ['actors', params],
+    queryKey: ['actors', params?.page || 1, params?.page_size || 20, params],
     queryFn: () => actorsApi.getActors(params),
     select: (data) => data.data,
   })
@@ -47,9 +47,9 @@ export const useActor = (id: number) => {
 }
 
 // Directors queries
-export const useDirectors = (params?: { page?: number; name?: string }) => {
+export const useDirectors = (params?: { page?: number; name?: string; page_size?: number }) => {
   return useQuery({
-    queryKey: ['directors', params],
+    queryKey: ['directors', params?.page || 1, params?.page_size || 20, params],
     queryFn: () => directorsApi.getDirectors(params),
     select: (data) => data.data,
   })
