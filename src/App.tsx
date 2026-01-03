@@ -6,7 +6,9 @@ import { HomePage } from './pages/HomePage'
 import { MoviesPage } from './pages/MoviesPage'
 import { MovieDetailPage } from './pages/MovieDetailPage'
 import { ActorsPage } from './pages/ActorsPage'
+import { ActorDetailPage } from './pages/ActorDetailPage'
 import { DirectorsPage } from './pages/DirectorsPage'
+import { DirectorDetailPage } from './pages/DirectorDetailPage'
 import { FavoritesPage } from './pages/FavoritesPage'
 
 // Create a client
@@ -30,7 +32,9 @@ function App() {
               <Route path="/movies" element={<MoviesPage />} />
               <Route path="/movies/:id" element={<MovieDetailPage />} />
               <Route path="/actors" element={<ActorsPage />} />
+              <Route path="/actors/:id" element={<ActorDetailPage />} />
               <Route path="/directors" element={<DirectorsPage />} />
+              <Route path="/directors/:id" element={<DirectorDetailPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="*" element={
                 <div className="text-center py-12">

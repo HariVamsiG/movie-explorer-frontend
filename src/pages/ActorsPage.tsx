@@ -6,14 +6,17 @@ import { Input } from '../components/ui/Input'
 import { LoadingCard } from '../components/ui/Loading'
 import { Pagination } from '../components/ui/Pagination'
 import { useActors } from '../hooks/useQueries'
+import { useDebounce } from '../hooks/useDebounce'
 
 export function ActorsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  
+  const debouncedSearch = useDebounce(searchTerm, 700)
 
   const { data, isLoading, error } = useActors({ 
     page: currentPage, 
-    name: searchTerm || undefined 
+    name: debouncedSearch || undefined 
   })
 
   const handlePageChange = (page: number) => {
@@ -68,39 +71,51 @@ export function ActorsPage() {
           ))}
         </div>
       ) : data?.results.length === 0 ? (
-        <div className="text-center py-12">
-          <User className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No actors found</h3>
-          <p className="text-gray-600 dark:text-gray-400">Try adjusting your search criteria.</p>
-        </div>
+        // Only show "no results" message if search is applied
+        
+          <div className="text-center py-12">
+            <User className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No actors found</h3>
+            { debouncedSearch && (<p className="text-gray-600 dark:text-gray-400">Try adjusting your search criteria.</p>) }
+          </div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {data?.results.map((actor) => (
               <Link key={actor.id} to={`/actors/${actor.id}`}>
-                <Card hover className="h-full">
-                  <CardContent className="p-6 text-center">
-                    {actor.image_url ? (
-                      <img
-                        src={actor.image_url}
-                        alt={actor.name}
-                        className="w-20 h-20 rounded-full object-cover mx-auto mb-4"
-                      />
-                    ) : (
-                      <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <User className="h-10 w-10 text-blue-600 dark:text-blue-400" />
+                <Card hover className="h-80 overflow-hidden group relative">
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                    style={{
+                      backgroundImage: actor.image_url 
+                        ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(${actor.image_url})`
+                        : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  
+                  <CardContent className="relative h-full p-6 flex flex-col justify-end text-white">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold leading-tight">{actor.name}</h3>
+                      
+                      {actor.nationality && (
+                        <p className="text-sm text-gray-200 flex items-center gap-1">
+                          <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
+                          {actor.nationality}
+                        </p>
+                      )}
+                      
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-xs text-gray-300 bg-black/30 px-2 py-1 rounded-full backdrop-blur-sm">
+                          {actor.movies_count} movie{actor.movies_count !== 1 ? 's' : ''}
+                        </span>
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                       </div>
-                    )}
-                    
-                    <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100">{actor.name}</h3>
-                    
-                    {actor.nationality && (
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">{actor.nationality}</p>
-                    )}
-                    
-                    <p className="text-gray-500 dark:text-gray-400 text-sm">
-                      {actor.movies_count} movie{actor.movies_count !== 1 ? 's' : ''}
-                    </p>
+                    </div>
                   </CardContent>
                 </Card>
               </Link>

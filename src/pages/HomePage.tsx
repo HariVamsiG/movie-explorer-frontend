@@ -92,7 +92,7 @@ export function HomePage() {
             ))}
           </div>
         ) : (
-          <MovieGrid movies={topMovies?.slice(0, 4) || []} />
+          <MovieGrid movies={topMovies?.slice(0, 4) || []} showSearchMessage={false} />
         )}
       </section>
 

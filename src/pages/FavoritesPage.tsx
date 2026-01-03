@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Trash2, ExternalLink } from 'lucide-react'
+import { Trash2, Calendar } from 'lucide-react'
 import { Card, CardContent } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { useFavorites } from '../hooks/useFavorites'
@@ -35,48 +35,56 @@ export function FavoritesPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {favorites.map((movie) => (
-          <Card key={movie.id} hover className="group overflow-hidden">
-            <div className="relative">
-              {movie.poster_url ? (
-                <img
-                  src={movie.poster_url}
-                  alt={movie.title}
-                  className="h-64 w-full object-cover transition-transform group-hover:scale-105"
+          <div key={movie.id} className="relative">
+            <Link to={`/movies/${movie.id}`}>
+              <Card hover className="group overflow-hidden h-[420px] flex flex-col relative">
+                <div 
+                  className="absolute inset-0 bg-cover bg-center bg-top transition-transform duration-300 group-hover:scale-105"
+                  style={{
+                    backgroundImage: movie.poster_url 
+                      ? `linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%), url(${movie.poster_url})`
+                      : 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)'
+                  }}
                 />
-              ) : (
-                <div className="h-64 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <span className="text-gray-400 dark:text-gray-500 text-sm">No Image</span>
-                </div>
-              )}
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300"
-                onClick={() => removeFromFavorites(movie.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-
-            <CardContent className="p-4">
-              <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
-                {movie.title}
-              </h3>
-              
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
-                <p>Year: {formatYear(movie.release_year)}</p>
-                <p>Director: {movie.director_name}</p>
-              </div>
-
-              <Link to={`/movies/${movie.id}`}>
-                <Button variant="outline" size="sm" className="w-full">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  View Details
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                
+                {/* Remove Button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="absolute top-3 right-3 p-2 rounded-full bg-black/30 dark:bg-white/5 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 backdrop-blur-sm z-50"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    removeFromFavorites(movie.id)
+                  }}
+                >
+                  <Trash2 className="h-4 w-4" />
                 </Button>
-              </Link>
-            </CardContent>
-          </Card>
+
+                {/* Content */}
+                <CardContent className="relative h-full p-4 flex flex-col justify-end text-white z-10">
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold leading-tight line-clamp-2">
+                      {movie.title}
+                    </h3>
+                    
+                    <div className="space-y-2 text-sm text-gray-200">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-3 w-3" />
+                        <span>{formatYear(movie.release_year)}</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs">Director:</span>
+                        <span className="text-xs font-medium line-clamp-1">{movie.director_name}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
         ))}
       </div>
     </div>

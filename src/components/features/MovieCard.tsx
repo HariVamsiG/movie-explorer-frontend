@@ -29,90 +29,88 @@ export function MovieCard({ movie, className }: MovieCardProps) {
   }
 
   return (
-    <Link to={`/movies/${movie.id}`}>
-      <Card hover className={cn('group overflow-hidden', className)}>
-        <div className="relative">
-          {movie.poster_url ? (
-            <img
-              src={movie.poster_url}
-              alt={movie.title}
-              className="h-64 w-full object-cover transition-transform group-hover:scale-105"
-            />
-          ) : (
-            <div className="h-64 w-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-              <span className="text-gray-400 dark:text-gray-500 text-sm">No Image</span>
-            </div>
-          )}
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              'absolute top-2 right-2 p-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm',
-              favorite ? 'text-red-500 dark:text-red-400' : 'text-gray-600 dark:text-gray-300'
-            )}
-            onClick={handleToggleFavorite}
-          >
-            <Heart className={cn('h-4 w-4', favorite && 'fill-current')} />
-          </Button>
-
-          {movie.average_rating && (
-            <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1">
-              <Star className="h-3 w-3 fill-current text-yellow-400" />
-              {formatRating(movie.average_rating)}
-            </div>
-          )}
+    <Card hover className={cn('group overflow-hidden h-[420px] flex flex-col relative', className)}>
+      <Link to={`/movies/${movie.id}`} className="absolute inset-0 z-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-top transition-transform duration-300 group-hover:scale-105"
+          style={{
+            backgroundImage: movie.poster_url 
+              ? `linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%), url(${movie.poster_url})`
+              : 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+      </Link>
+      
+      {/* Rating Badge */}
+      {movie.average_rating && (
+        <div className="absolute top-3 left-3 bg-black/70 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1 backdrop-blur-sm z-10">
+          <Star className="h-3 w-3 fill-current text-yellow-400" />
+          {formatRating(movie.average_rating)}
         </div>
+      )}
 
-        <CardContent className="p-4">
-          <h3 className="font-semibold text-lg mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
+      {/* Favorite Button */}
+      <Button
+        variant="ghost"
+        size="sm"
+        className={cn(
+          'absolute top-3 right-3 p-2 rounded-full bg-black/30 dark:bg-white/5 backdrop-blur-sm z-20',
+          favorite 
+            ? 'text-red-500 dark:text-red-400' 
+            : 'text-white dark:text-gray-200 hover:text-red-500 dark:hover:text-red-400'
+        )}
+        onClick={handleToggleFavorite}
+      >
+        <Heart className={cn('h-4 w-4', favorite && 'fill-current')} />
+      </Button>
+
+      {/* Content */}
+      <CardContent className="relative h-full p-4 flex flex-col justify-end text-white z-10 pointer-events-none">
+        <div className="space-y-3">
+          <h3 className="text-lg font-bold leading-tight line-clamp-2">
             {movie.title}
           </h3>
           
-          <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="space-y-2 text-sm text-gray-200">
             <div className="flex items-center gap-2">
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-3 w-3" />
               <span>{formatYear(movie.release_year)}</span>
+              {movie.duration && (
+                <>
+                  <span>•</span>
+                  <Clock className="h-3 w-3" />
+                  <span>{formatDuration(movie.duration)}</span>
+                </>
+              )}
             </div>
             
             <div className="flex items-center gap-2">
-              <span className="font-medium">Director:</span>
-              <span>{movie.director_name}</span>
+              <span className="text-xs">Director:</span>
+              <span className="text-xs font-medium line-clamp-1">{movie.director_name}</span>
             </div>
-
-            {movie.duration && (
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>{formatDuration(movie.duration)}</span>
-              </div>
-            )}
-
-            {movie.genres.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
-                {movie.genres.slice(0, 3).map((genre) => (
-                  <span
-                    key={genre}
-                    className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full"
-                  >
-                    {genre}
-                  </span>
-                ))}
-                {movie.genres.length > 3 && (
-                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded-full">
-                    +{movie.genres.length - 3}
-                  </span>
-                )}
-              </div>
-            )}
-
-            {movie.review_count > 0 && (
-              <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                {movie.review_count} review{movie.review_count !== 1 ? 's' : ''}
-              </div>
-            )}
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+
+          {/* Genres */}
+          {movie.genres.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {movie.genres.slice(0, 2).map((genre) => (
+                <span
+                  key={genre}
+                  className="px-2 py-1 bg-white/20 text-white text-xs rounded-full backdrop-blur-sm"
+                >
+                  {genre}
+                </span>
+              ))}
+              {movie.genres.length > 2 && (
+                <span className="px-2 py-1 bg-white/20 text-white text-xs rounded-full backdrop-blur-sm">
+                  +{movie.genres.length - 2}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   )
 }

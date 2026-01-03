@@ -3,7 +3,8 @@ import { Search, Filter, X } from 'lucide-react'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { Card, CardContent } from '../ui/Card'
-import { useGenres } from '../../hooks/useQueries'
+import { Autocomplete } from '../ui/Autocomplete'
+import { useGenres, useActors, useDirectors } from '../../hooks/useQueries'
 import type { MovieFilters } from '../../types'
 
 interface MovieFiltersProps {
@@ -14,6 +15,8 @@ interface MovieFiltersProps {
 export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFiltersProps) {
   const [showAdvanced, setShowAdvanced] = useState(false)
   const { data: genresData } = useGenres()
+  const { data: actorsData } = useActors({ page: 1 })
+  const { data: directorsData } = useDirectors({ page: 1 })
 
   const handleFilterChange = (key: keyof MovieFilters, value: string | number | undefined) => {
     onFiltersChange({
@@ -28,6 +31,9 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
   }
 
   const hasActiveFilters = Object.values(filters).some(value => value !== undefined && value !== '')
+
+  const actorNames = actorsData?.results.map(actor => actor.name) || []
+  const directorNames = directorsData?.results.map(director => director.name) || []
 
   return (
     <Card className="mb-6">
@@ -74,10 +80,11 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Director
                 </label>
-                <Input
-                  placeholder="Director name..."
+                <Autocomplete
                   value={filters.director || ''}
-                  onChange={(e) => handleFilterChange('director', e.target.value)}
+                  onChange={(value) => handleFilterChange('director', value)}
+                  options={directorNames}
+                  placeholder="Director name..."
                 />
               </div>
 
@@ -85,10 +92,11 @@ export function MovieFiltersComponent({ filters, onFiltersChange }: MovieFilters
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Actor
                 </label>
-                <Input
-                  placeholder="Actor name..."
+                <Autocomplete
                   value={filters.actor || ''}
-                  onChange={(e) => handleFilterChange('actor', e.target.value)}
+                  onChange={(value) => handleFilterChange('actor', value)}
+                  options={actorNames}
+                  placeholder="Actor name..."
                 />
               </div>
 

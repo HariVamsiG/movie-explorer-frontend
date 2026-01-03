@@ -16,7 +16,6 @@ export interface Movie {
 export interface MovieDetail extends Movie {
   director: Director
   actors: Actor[]
-  genres: Genre[]
   reviews: Review[]
 }
 
@@ -28,6 +27,7 @@ export interface Actor {
   biography: string
   image_url: string | null
   movies_count: number
+  movies: Movie[]
   created_at: string
   updated_at: string
 }
@@ -40,6 +40,7 @@ export interface Director {
   biography: string
   image_url: string | null
   movies_count: number
+  movies: Movie[]
   created_at: string
   updated_at: string
 }
