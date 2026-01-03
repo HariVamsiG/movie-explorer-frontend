@@ -1,7 +1,6 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Calendar, MapPin, Film } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '../components/ui/Card'
+import { ArrowLeft, Film } from 'lucide-react'
 import { Button } from '../components/ui/Button'
 import { LoadingPage } from '../components/ui/Loading'
 import { MovieGrid } from '../components/features/MovieGrid'
@@ -35,80 +34,94 @@ export function DirectorDetailPage() {
         Back to Directors
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Director Profile */}
-        <div className="lg:col-span-1">
-          <Card className="h-96 overflow-hidden relative">
+      <div className="mb-8">
+        <div className="flex flex-col md:flex-row bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-sm">
+          {/* Director Image */}
+          <div className="md:w-56 h-56 md:h-64 relative flex-shrink-0">
             <div 
               className="absolute inset-0 bg-cover bg-center"
               style={{
                 backgroundImage: director.image_url 
-                  ? `linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%), url(${director.image_url})`
+                  ? `url(${director.image_url})`
                   : 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)'
               }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-            
-            <CardContent className="relative h-full p-6 flex flex-col justify-end text-white">
-              <div className="space-y-4">
-                <h1 className="text-3xl font-bold leading-tight">{director.name}</h1>
-                
-                <div className="space-y-3 text-sm">
-                  {director.birth_date && (
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-purple-400" />
-                      <span>Born {formatDate(director.birth_date)}</span>
-                    </div>
-                  )}
-                  
-                  {director.nationality && (
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-purple-400" />
-                      <span>{director.nationality}</span>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center gap-2">
-                    <Film className="h-4 w-4 text-purple-400" />
-                    <span>{director.movies.length} movie{director.movies.length !== 1 ? 's' : ''} directed</span>
-                  </div>
-                </div>
+          </div>
+
+          {/* Director Details */}
+          <div className="flex-1 p-6 space-y-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                {director.name}
+              </h1>
+              <p className="text-purple-600 dark:text-purple-400 text-sm font-medium">
+                Director
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Films</p>
+                <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{director.movies.length}</p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Director Details */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Biography */}
-          {director.biography && (
-            <Card>
-              <CardHeader>
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Biography</h2>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{director.biography}</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Movies Directed */}
-          <Card>
-            <CardHeader>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Movies Directed</h2>
-            </CardHeader>
-            <CardContent>
-              {director.movies.length > 0 ? (
-                <MovieGrid movies={director.movies} />
-              ) : (
-                <div className="text-center py-8">
-                  <Film className="h-16 w-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-                  <p className="text-gray-600 dark:text-gray-400">No movies found for this director.</p>
+              
+              {director.birth_date && (
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Age</p>
+                  <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    {new Date().getFullYear() - new Date(director.birth_date).getFullYear()}
+                  </p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+              
+              {director.nationality && (
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Nationality</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{director.nationality}</p>
+                </div>
+              )}
+              
+              {director.birth_date && (
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Born</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                    {formatDate(director.birth_date)}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {director.biography && (
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Biography</p>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                  {director.biography}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
+      </div>
+
+      {/* Movies Section - Full Width */}
+      <div className="mt-12">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Movies Directed</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
+              {director.movies.length} {director.movies.length === 1 ? 'movie' : 'movies'} directed by {director.name}
+            </p>
+          </div>
+        </div>
+        {director.movies.length > 0 ? (
+          <MovieGrid movies={director.movies} />
+        ) : (
+          <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+            <Film className="h-20 w-20 text-gray-400 dark:text-gray-500 mx-auto mb-6" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No movies found</h3>
+            <p className="text-gray-600 dark:text-gray-400">This director hasn't directed any movies yet.</p>
+          </div>
+        )}
       </div>
     </div>
   )
